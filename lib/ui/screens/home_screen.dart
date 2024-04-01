@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-
 import '../../utils/constants/app_colors.dart';
 import '../../utils/constants/data_constants.dart';
 import '../widgets/custom_bottom_nav_bar.dart';
