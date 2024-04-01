@@ -106,7 +106,8 @@ class ProgramsPage extends StatelessWidget {
                 label: "Programs for you",
               ),
               Consumer<LessonsController>(
-                  builder: (_, mod, __) => mod.loading
+                  builder: (_, mod, __) => 
+                  mod.loading
                       ? const Apploading()
                       : mod.userError.code != 0
                           ? Text(mod.userError.message)
