@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 
 import '../../utils/constants/app_colors.dart';
 import '../../utils/constants/app_text_style.dart';
+import '../widgets/app_loading.dart';
 import '../widgets/home_page_card.dart';
 import '../widgets/sub_headding.dart';
 
@@ -62,20 +63,24 @@ class ProgramsPage extends StatelessWidget {
                 label: "Programs for you",
               ),
               Consumer<ProgramController>(
-                  builder: (_, mod, __) => SingleChildScrollView(
-                        scrollDirection: Axis.horizontal,
-                        child: Row(
-                          children: [
-                            for (var item in mod.programsList)
-                              HomePageCard(
-                                imagePath: "assets/images/yoga.png",
-                                title: item.category,
-                                subTitle: item.name,
-                                detailsText: '${item.lesson}lessons',
-                              )
-                          ],
-                        ),
-                      )),
+                  builder: (_, mod, __) => mod.loading
+                      ? const Apploading()
+                      : mod.userError.code != 0
+                          ? Text(mod.userError.message)
+                          : SingleChildScrollView(
+                              scrollDirection: Axis.horizontal,
+                              child: Row(
+                                children: [
+                                  for (var item in mod.programsList)
+                                    HomePageCard(
+                                      imagePath: "assets/images/yoga.png",
+                                      title: item.category,
+                                      subTitle: item.name,
+                                      detailsText: '${item.lesson}lessons',
+                                    )
+                                ],
+                              ),
+                            )),
               const SubHeadings(
                 label: "Events and experiences",
               ),
@@ -101,21 +106,25 @@ class ProgramsPage extends StatelessWidget {
                 label: "Programs for you",
               ),
               Consumer<LessonsController>(
-                  builder: (_, mod, __) => SingleChildScrollView(
-                        scrollDirection: Axis.horizontal,
-                        child: Row(
-                          children: [
-                            for (var item in mod.lessonList)
-                              HomePageCard(
-                                  imagePath: "assets/images/exercise.png",
-                                  title: item.category,
-                                  subTitle: item.name,
-                                  subTitleHeight: 65,
-                                  detailsText:
-                                      '${((item.duration) / 60).toStringAsFixed(2)}min')
-                          ],
-                        ),
-                      )
+                  builder: (_, mod, __) => mod.loading
+                      ? const Apploading()
+                      : mod.userError.code != 0
+                          ? Text(mod.userError.message)
+                          : SingleChildScrollView(
+                              scrollDirection: Axis.horizontal,
+                              child: Row(
+                                children: [
+                                  for (var item in mod.lessonList)
+                                    HomePageCard(
+                                        imagePath: "assets/images/exercise.png",
+                                        title: item.category,
+                                        subTitle: item.name,
+                                        subTitleHeight: 65,
+                                        detailsText:
+                                            '${((item.duration) / 60).toStringAsFixed(2)}min')
+                                ],
+                              ),
+                            )
                   //
                   ),
               const SizedBox(
