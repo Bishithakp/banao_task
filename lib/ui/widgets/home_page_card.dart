@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 import '../../utils/constants/app_colors.dart';
 import '../../utils/constants/app_text_style.dart';
@@ -10,6 +12,7 @@ class HomePageCard extends StatelessWidget {
   final String detailsText;
   final bool showBookOption;
   final bool showLockOption;
+  final double subTitleHeight;
 
   const HomePageCard(
       {super.key,
@@ -18,13 +21,14 @@ class HomePageCard extends StatelessWidget {
       required this.subTitle,
       required this.detailsText,
       this.showBookOption = false,
-      this.showLockOption = false});
+      this.showLockOption = false,
+      this.subTitleHeight = 30});
 
   @override
   Widget build(BuildContext context) {
     return Container(
       width: MediaQuery.of(context).size.width * 0.7,
-      margin: const EdgeInsets.only(right: 10, left: 2, top: 2, bottom: 2),
+      margin: const EdgeInsets.only(left: 16, top: 2, bottom: 2),
       decoration: BoxDecoration(
         color: AppColors.whiteColor,
         borderRadius: BorderRadius.circular(8),
@@ -60,9 +64,12 @@ class HomePageCard extends StatelessWidget {
                   style: AppTextStyle.homePageCardTitleTextStyle,
                 ),
                 buildSizedBox(),
-                Text(
-                  subTitle,
-                  style: AppTextStyle.homePageCardSubTitleTextStyle,
+                SizedBox(
+                  height: subTitleHeight,
+                  child: Text(
+                    subTitle,
+                    style: AppTextStyle.homePageCardSubTitleTextStyle,
+                  ),
                 ),
                 buildSizedBox(),
                 Row(
@@ -88,36 +95,33 @@ class HomePageCard extends StatelessWidget {
 
   SizedBox buildSizedBox() {
     return const SizedBox(
-                height: 12,
-              );
+      height: 12,
+    );
   }
 
   Visibility lockIcon() {
     return Visibility(
-                    visible: showLockOption,
-                    child: Image.asset(
-                      "assets/icons/lock-1.png",
-                      width: 20,
-                    ),
-                  );
+      visible: showLockOption,
+      child: Image.asset(
+        "assets/icons/lock-1.png",
+        width: 20,
+      ),
+    );
   }
 
   Visibility bookButton() {
     return Visibility(
-                    visible: showBookOption,
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 5, horizontal: 20),
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20),
-                          border: Border.all(color: AppColors.appMainColor)),
-                      child: Text(
-                        "Book",
-                        style: AppTextStyle.homePageOptionsTextStyle.copyWith(
-                          fontSize: 12
-                        ),
-                      ),
-                    ),
-                  );
+      visible: showBookOption,
+      child: Container(
+        padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 20),
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(20),
+            border: Border.all(color: AppColors.appMainColor)),
+        child: Text(
+          "Book",
+          style: AppTextStyle.homePageOptionsTextStyle.copyWith(fontSize: 12),
+        ),
+      ),
+    );
   }
 }

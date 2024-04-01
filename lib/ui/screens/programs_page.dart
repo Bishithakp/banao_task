@@ -1,6 +1,9 @@
+import 'package:bana0_task/view_model/lessons_controller.dart';
+import 'package:bana0_task/view_model/program_controller.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:provider/provider.dart';
 
 import '../../utils/constants/app_colors.dart';
 import '../../utils/constants/app_text_style.dart';
@@ -50,36 +53,33 @@ class ProgramsPage extends StatelessWidget {
           ),
         ),
         Container(
-          padding: const EdgeInsets.symmetric(
-            horizontal: 16,
-          ),
           color: AppColors.whiteColor,
-          child: const Column(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SubHeadings(
+              const SubHeadings(
                 label: "Programs for you",
               ),
-              SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Row(children: [
-                    HomePageCard(
-                      imagePath: "assets/images/yoga.png",
-                      title: "Lifestyle",
-                      detailsText: "16 lessons",
-                      subTitle: "A complete guide for your new born baby",
-                    ),
-                    HomePageCard(
-                      imagePath: "assets/images/yoga.png",
-                      title: "Working Part",
-                      detailsText: "12 lessons",
-                      subTitle: "Understand Behaviour That Challenges",
-                    ),
-                  ])),
-              SubHeadings(
+              Consumer<ProgramController>(
+                  builder: (_, mod, __) => SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Row(
+                          children: [
+                            for (var item in mod.programsList)
+                              HomePageCard(
+                                imagePath: "assets/images/yoga.png",
+                                title: item.category,
+                                subTitle: item.name,
+                                detailsText: '${item.lesson}lessons',
+                              )
+                          ],
+                        ),
+                      )),
+              const SubHeadings(
                 label: "Events and experiences",
               ),
-              SingleChildScrollView(
+              const SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
                   child: Row(children: [
                     HomePageCard(
@@ -97,28 +97,28 @@ class ProgramsPage extends StatelessWidget {
                       showBookOption: true,
                     ),
                   ])),
-              SubHeadings(
+              const SubHeadings(
                 label: "Programs for you",
               ),
-              SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Row(children: [
-                    HomePageCard(
-                      imagePath: "assets/images/exercise.png",
-                      title: "BABYCARE",
-                      detailsText: "3 min",
-                      subTitle: "Understanding of human behaviour",
-                      showLockOption: true,
-                    ),
-                    HomePageCard(
-                      imagePath: "assets/images/exercise.png",
-                      title: "Lifestyle",
-                      detailsText: "1 min",
-                      subTitle: "A complete guide for your new born baby",
-                      showLockOption: true,
-                    ),
-                  ])),
-              SizedBox(
+              Consumer<LessonsController>(
+                  builder: (_, mod, __) => SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Row(
+                          children: [
+                            for (var item in mod.lessonList)
+                              HomePageCard(
+                                  imagePath: "assets/images/exercise.png",
+                                  title: item.category,
+                                  subTitle: item.name,
+                                  subTitleHeight: 65,
+                                  detailsText:
+                                      '${((item.duration) / 60).toStringAsFixed(2)}min')
+                          ],
+                        ),
+                      )
+                  //
+                  ),
+              const SizedBox(
                 height: 12,
               ),
             ],
@@ -127,36 +127,32 @@ class ProgramsPage extends StatelessWidget {
       ],
     );
   }
-
-  Widget customButton(String imagePath, String label, BuildContext context) {
-    double widthRatio=MediaQuery.of(context).size.width/100;
-    return Container(
-      width: MediaQuery.of(context).size.width / 2 - 32,
-      padding:  EdgeInsets.symmetric(vertical: 10, horizontal: widthRatio*3.5),
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(8),
-          border: Border.all(color: AppColors.appMainColor)),
-      child: Center(
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Image.asset(imagePath, width: 24),
-            const SizedBox(
-              width: 10,
-            ),
-            Expanded(
-              child: Text(
-                label,
-                style: AppTextStyle.homePageOptionsTextStyle,
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
 }
 
-
-
-
+Widget customButton(String imagePath, String label, BuildContext context) {
+  double widthRatio = MediaQuery.of(context).size.width / 100;
+  return Container(
+    width: MediaQuery.of(context).size.width / 2 - 32,
+    padding: EdgeInsets.symmetric(vertical: 10, horizontal: widthRatio * 3.5),
+    decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(color: AppColors.appMainColor)),
+    child: Center(
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Image.asset(imagePath, width: 24),
+          const SizedBox(
+            width: 10,
+          ),
+          Expanded(
+            child: Text(
+              label,
+              style: AppTextStyle.homePageOptionsTextStyle,
+            ),
+          ),
+        ],
+      ),
+    ),
+  );
+}
